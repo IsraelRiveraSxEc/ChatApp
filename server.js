@@ -40,9 +40,15 @@ io.on('connection', (socket) => {
 
     // Manejo de mensajes
     socket.on('chat message', (msg) => {
+        // Preservar los saltos de línea pero evitar inyección HTML
+        const sanitizedMsg = msg
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+            
         io.emit('chat message', {
             usuario: socket.username,
-            mensaje: msg,
+            mensaje: sanitizedMsg,
             tiempo: new Date().toLocaleTimeString()
         });
     });

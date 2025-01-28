@@ -54,20 +54,19 @@ body {
 
 /* Lista de mensajes */
 #messages {
-    list-style-type: none;
-    margin: 0;
-    padding: 1rem;
+    white-space: pre-wrap;
+    word-wrap: break-word;
     overflow-y: auto;
-    flex-grow: 1;
+    max-height: 500px;
+    padding: 10px;
 }
 
 /* Estilos de los mensajes */
 .message {
-    background-color: var(--message-bg);
-    padding: 0.5rem 1rem;
-    margin-bottom: 0.5rem;
-    border-radius: 10px;
-    max-width: 70%;
+    margin-bottom: 10px;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: #f0f0f0;
 }
 
 /* Estilos para mensajes propios */
