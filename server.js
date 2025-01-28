@@ -4,7 +4,7 @@ const app = express();                            // Creación de la aplicación
 const http = require('http').createServer(app);   // Creación del servidor HTTP
 const io = require('socket.io')(http, {
     cors: {
-        origin: ["https://chatapp-xxxx.onrender.com", "http://localhost:3000"],
+        origin: ["https://chatapp-52hg.onrender.com", "http://localhost:3000"],
         methods: ["GET", "POST"]
     }
 });
