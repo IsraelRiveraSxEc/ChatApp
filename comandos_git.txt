@@ -1,0 +1,5 @@
+git init
+git add .
+git commit -m "Initial commit"
+git remote add origin <URL_DE_TU_REPOSITORIO>
+git push -u origin main

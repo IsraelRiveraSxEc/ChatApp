@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!-- Metadatos básicos -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat en Tiempo Real</title>
+    
+    <!-- Enlaces a archivos CSS -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Scripts necesarios -->
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <!-- Contenedor principal -->
+    <div class="chat-container">
+        <!-- Encabezado del chat -->
+        <header class="chat-header">
+            <h1>Chat en Tiempo Real</h1>
+            <!-- Selector de tema -->
+            <button id="theme-toggle">🌙</button>
+        </header>
+
+        <!-- Lista de usuarios conectados -->
+        <div class="users-list">
+            <h3>Usuarios Conectados</h3>
+            <ul id="users"></ul>
+        </div>
+
+        <!-- Área de mensajes -->
+        <div class="messages-container">
+            <ul id="messages"></ul>
+        </div>
+
+        <!-- Formulario de entrada -->
+        <div class="input-container">
+            <!-- Formulario para el nombre de usuario -->
+            <form id="username-form" class="active">
+                <input type="text" id="username" placeholder="Ingresa tu nombre" required>
+                <button type="submit">Unirse al Chat</button>
+            </form>
+
+            <!-- Formulario para mensajes -->
+            <form id="message-form" class="hidden">
+                <input type="text" id="message" placeholder="Escribe un mensaje..." autocomplete="off">
+                <button type="submit">Enviar</button>
+            </form>
+        </div>
+
+        <!-- Indicador de estado de conexión -->
+        <div id="connection-status" class="disconnected">
+            Desconectado
+        </div>
+    </div>
+
+    <!-- Script principal -->
+    <script src="main.js"></script>
+</body>
+</html>

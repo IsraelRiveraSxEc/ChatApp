@@ -1,0 +1,137 @@
+/* Variables CSS para temas */
+:root {
+    /* Tema claro (default) */
+    --bg-color: #ffffff;
+    --text-color: #333333;
+    --input-bg: #f5f5f5;
+    --border-color: #dddddd;
+    --header-bg: #4a90e2;
+    --header-text: #ffffff;
+    --message-bg: #e9ecef;
+    --my-message-bg: #dcf8c6;
+}
+
+/* Tema oscuro */
+[data-theme="dark"] {
+    --bg-color: #1a1a1a;
+    --text-color: #ffffff;
+    --input-bg: #333333;
+    --border-color: #444444;
+    --header-bg: #2c3e50;
+    --header-text: #ffffff;
+    --message-bg: #2c3e50;
+    --my-message-bg: #1a472a;
+}
+
+/* Estilos generales */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: all 0.3s ease;
+}
+
+/* Contenedor principal del chat */
+.chat-container {
+    max-width: 800px;
+    margin: 0 auto;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Estilos del encabezado */
+.chat-header {
+    background-color: var(--header-bg);
+    color: var(--header-text);
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Lista de mensajes */
+#messages {
+    list-style-type: none;
+    margin: 0;
+    padding: 1rem;
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+/* Estilos de los mensajes */
+.message {
+    background-color: var(--message-bg);
+    padding: 0.5rem 1rem;
+    margin-bottom: 0.5rem;
+    border-radius: 10px;
+    max-width: 70%;
+}
+
+/* Estilos para mensajes propios */
+.message.own {
+    background-color: var(--my-message-bg);
+    margin-left: auto;
+}
+
+/* Contenedor de entrada de mensajes */
+.input-container {
+    padding: 1rem;
+    background-color: var(--bg-color);
+    border-top: 1px solid var(--border-color);
+}
+
+/* Estilos de formularios */
+form {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Estilos de inputs */
+input {
+    flex-grow: 1;
+    padding: 0.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background-color: var(--input-bg);
+    color: var(--text-color);
+}
+
+/* Estilos de botones */
+button {
+    padding: 0.5rem 1rem;
+    background-color: var(--header-bg);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Estado de conexión */
+#connection-status {
+    padding: 0.5rem;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+/* Estados de conexión */
+.connected {
+    background-color: #28a745;
+    color: white;
+}
+
+.disconnected {
+    background-color: #dc3545;
+    color: white;
+}
+
+/* Utilidades */
+.hidden {
+    display: none;
+}
+
+.active {
+    display: flex;
+}

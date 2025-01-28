@@ -1,0 +1,129 @@
+INFORME: DISEÑO DE INTERFAZ DE USUARIO - CHAT DE USUARIOS
+
+1. PRINCIPIOS DE DISEÑO APLICADOS
+--------------------------------
+
+1.1 Sensación:
+- Feedback visual inmediato para acciones del usuario
+- Transiciones suaves entre temas claro/oscuro
+- Indicadores de estado de mensaje
+- Notificaciones de conexión/desconexión
+- Animaciones sutiles en interacciones
+
+1.2 Percepción:
+- Jerarquía visual clara
+- Diferenciación de mensajes propios y ajenos
+- Agrupación lógica de elementos
+- Timestamps visualmente integrados
+- Estados de mensaje claramente identificables
+
+2. COMPONENTES DE LA INTERFAZ
+----------------------------
+
+2.1 Elementos principales:
+- Header con título y selector de tema
+- Campo de nombre de usuario
+- Área de mensajes con scroll automático
+- Campo de entrada con botón de envío
+- Indicadores de estado y tiempo
+
+2.2 Decisiones de diseño:
+- Esquema de colores:
+  * Tema claro: Fondo blanco (#ffffff), Texto negro (#000000)
+  * Tema oscuro: Fondo oscuro (#1a1a1a), Texto claro (#ffffff)
+  * Acentos: Azul (#4a90e2), Verde (#2ecc71)
+
+- Tipografía:
+  * Principal: System UI
+  * Mensajes: Sans-serif
+  * Timestamps: Monospace
+
+- Layout:
+  * Diseño responsive
+  * Máximo 800px de ancho
+  * Padding consistente
+  * Espaciado proporcional
+
+3. EVALUACIÓN DE USABILIDAD
+--------------------------
+
+3.1 Criterios evaluados:
+- Facilidad de uso
+- Claridad visual
+- Responsive design
+- Accesibilidad
+- Rendimiento
+
+3.2 Resultados:
+- Interfaz intuitiva y fácil de usar
+- Adaptación correcta a diferentes dispositivos
+- Buen contraste y legibilidad
+- Tiempos de respuesta óptimos
+
+4. ETAPAS DE DESARROLLO
+----------------------
+
+4.1 Planificación:
+- Análisis de requerimientos
+- Definición de funcionalidades
+- Selección de tecnologías
+- Establecimiento de criterios de éxito
+
+4.2 Diseño:
+- Wireframes iniciales
+- Selección de paleta de colores
+- Definición de estructura
+- Diseño de componentes
+
+4.3 Implementación:
+- Desarrollo de estructura HTML
+- Implementación de estilos CSS
+- Programación de funcionalidades
+- Integración de WebSocket
+
+4.4 Pruebas:
+- Testing de funcionalidades
+- Validación de responsive
+- Pruebas de usabilidad
+- Optimización de rendimiento
+
+5. CRITERIOS DE EVALUACIÓN
+-------------------------
+
+5.1 Funcionalidad (40%):
+- Comunicación en tiempo real
+- Sistema de usuarios
+- Persistencia de datos
+- Temas claro/oscuro
+- Timestamps y estados
+
+5.2 Usabilidad (30%):
+- Navegación intuitiva
+- Diseño responsive
+- Feedback visual
+- Accesibilidad
+- Rendimiento
+
+5.3 Código y Documentación (30%):
+- Estructura organizada
+- Comentarios claros
+- Buenas prácticas
+- Mantenibilidad
+- Documentación completa
+
+6. CONCLUSIONES Y RECOMENDACIONES
+--------------------------------
+
+6.1 Logros:
+- Interfaz intuitiva y funcional
+- Sistema robusto de mensajería
+- Buena adaptabilidad
+- Código mantenible
+
+6.2 Recomendaciones:
+- Implementar notificaciones push
+- Agregar soporte para emojis
+- Mejorar sistema de usuarios
+- Ampliar opciones de personalización
+
+Este informe debe actualizarse con cada iteración significativa del proyecto.

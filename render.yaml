@@ -1,0 +1,12 @@
+# Configuración de servicios para Render
+services:
+  # Definición del servicio web
+  - type: web
+    name: chat-app
+    env: node # Entorno de Node.js
+    buildCommand: npm install # Comando para instalar dependencias
+    startCommand: node server.js # Comando para iniciar la aplicación
+    envVars:
+      # Variables de entorno
+      - key: PORT
+        value: 10000

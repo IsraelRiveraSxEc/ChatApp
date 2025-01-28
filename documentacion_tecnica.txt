@@ -1,0 +1,138 @@
+DOCUMENTACIÓN TÉCNICA - CHAT DE USUARIOS
+======================================
+
+1. ESTRUCTURA DEL PROYECTO
+-------------------------
+/chat_app
+  ├── index.html          # Estructura principal de la aplicación
+  ├── styles.css          # Estilos y diseño visual
+  ├── main.js            # Lógica principal de la aplicación
+  ├── server.js          # Servidor WebSocket
+  ├── iniciar_chat.bat   # Script de inicio rápido
+  └── documentacion_tecnica.txt
+
+2. COMPONENTES PRINCIPALES
+-------------------------
+2.1 HTML (index.html)
+- Estructura semántica con header, área de mensajes y formulario
+- Diseño responsive y accesible
+- Sistema de temas claro/oscuro
+- Campos para nombre de usuario
+- Área de mensajes con formato timestamp
+
+2.2 CSS (styles.css)
+- Variables CSS para temas claro/oscuro
+- Detección automática del tema del sistema
+- Diseño modular y reutilizable
+- Sistema de colores adaptativo
+- Animaciones y transiciones suaves
+- Estilos para timestamps y estados de mensaje
+
+2.3 JavaScript (main.js)
+- Patrón de diseño orientado a objetos
+- Sistema de WebSocket para comunicación en tiempo real
+- Manejo de usuarios y sesiones
+- LocalStorage para persistencia de mensajes
+- Formateo de timestamps y estados de mensaje
+
+2.4 Servidor (server.js)
+- Servidor WebSocket para comunicación en tiempo real
+- Manejo de conexiones múltiples
+- Broadcast de mensajes
+- Sistema de usuarios conectados
+
+3. FUNCIONALIDADES IMPLEMENTADAS
+-------------------------------
+- Sistema de usuarios con nombres personalizados
+- Modo claro/oscuro automático y manual
+- Timestamps para envío y lectura de mensajes
+- Persistencia de mensajes con LocalStorage
+- Comunicación entre computadoras en red local
+- Formato de mensajes con espacios y saltos de línea
+- Indicador de estado de conexión
+- Validación de mensajes y usuarios
+
+4. BUENAS PRÁCTICAS IMPLEMENTADAS
+--------------------------------
+4.1 HTML
+- Uso de elementos semánticos
+- Atributos ARIA para accesibilidad
+- Estructura jerárquica clara
+- Meta tags para responsive design
+
+4.2 CSS
+- Nomenclatura BEM
+- Variables CSS para temas
+- Media queries para responsive
+- Optimización de rendimiento
+- Prefijos para compatibilidad
+
+4.3 JavaScript
+- Código modular y comentado
+- Manejo eficiente de eventos
+- Prevención de memory leaks
+- Gestión de errores
+- Optimización de rendimiento
+
+5. REQUISITOS TÉCNICOS
+---------------------
+Servidor:
+- Node.js instalado
+- Conexión a red local
+- Puerto 3000 disponible
+
+Cliente:
+- Navegador web moderno
+- JavaScript habilitado
+- Conexión a red local
+
+6. INSTRUCCIONES DE INSTALACIÓN
+-----------------------------
+1. Instalar Node.js desde nodejs.org
+2. Copiar carpeta chat_app al destino deseado
+3. Ejecutar iniciar_chat.bat
+4. Compartir IP mostrada en consola
+
+7. INSTRUCCIONES DE USO
+----------------------
+1. Ejecutar iniciar_chat.bat en PC servidor
+2. Abrir navegador con IP mostrada
+3. Ingresar nombre de usuario
+4. Comenzar a chatear
+
+8. MANTENIMIENTO
+---------------
+- Verificar actualizaciones de Node.js
+- Monitorear uso de LocalStorage
+- Revisar logs de servidor
+- Backup periódico de configuraciones
+
+9. SEGURIDAD
+-----------
+- Validación de entrada de usuarios
+- Sanitización de mensajes
+- Límites de tamaño de mensaje
+- Protección contra XSS
+- Rate limiting básico
+
+10. EVALUACIÓN Y CRITERIOS
+-------------------------
+Funcionalidad (40%):
+- Comunicación en tiempo real
+- Sistema de usuarios
+- Persistencia de datos
+- Temas claro/oscuro
+
+Usabilidad (30%):
+- Interfaz intuitiva
+- Responsive design
+- Feedback visual
+- Accesibilidad
+
+Código (30%):
+- Estructura clara
+- Documentación
+- Buenas prácticas
+- Mantenibilidad
+
+Esta documentación debe mantenerse actualizada con cada modificación significativa del código.
