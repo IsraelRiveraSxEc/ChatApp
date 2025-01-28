@@ -1,14 +1,23 @@
 const express = require('express');
+const compression = require('compression');
 const app = express();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http, {
     cors: {
         origin: ["https://chatapp-52hg.onrender.com", "http://localhost:3000"],
         methods: ["GET", "POST"]
-    }
+    },
+    pingTimeout: 10000,
+    pingInterval: 2500
 });
 
-app.use(express.static(__dirname));
+// Comprimir todas las respuestas
+app.use(compression());
+
+// Cache para archivos estáticos
+app.use(express.static(__dirname, {
+    maxAge: '1h'
+}));
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
