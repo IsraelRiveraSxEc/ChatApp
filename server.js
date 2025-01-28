@@ -40,11 +40,13 @@ io.on('connection', (socket) => {
 
     // Manejo de mensajes
     socket.on('chat message', (msg) => {
-        // Preservar los saltos de línea pero evitar inyección HTML
+        // Sanitiza el mensaje preservando saltos de línea y espacios
         const sanitizedMsg = msg
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;');
+            .replace(/&/g, '&amp;')           // Escapa &
+            .replace(/</g, '&lt;')            // Escapa <
+            .replace(/>/g, '&gt;')            // Escapa >
+            .replace(/"/g, '&quot;')          // Escapa "
+            .replace(/'/g, '&#039;');         // Escapa '
             
         io.emit('chat message', {
             usuario: socket.username,

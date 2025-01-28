@@ -64,15 +64,15 @@ body {
 /* Estilos de los mensajes */
 .message {
     margin-bottom: 10px;
-    padding: 5px;
-    border-radius: 5px;
-    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: var(--message-bg);
 }
 
 /* Estilos para mensajes propios */
 .message.own {
     background-color: var(--my-message-bg);
-    margin-left: auto;
+    margin-left: 20%;
 }
 
 /* Contenedor de entrada de mensajes */
@@ -133,4 +133,21 @@ button {
 
 .active {
     display: flex;
+}
+
+/* Estilo para el área de entrada de mensajes */
+#message {
+    resize: vertical;          /* Permite redimensionar verticalmente */
+    min-height: 40px;         /* Altura mínima */
+    max-height: 150px;        /* Altura máxima */
+    padding: 8px;
+    line-height: 1.4;         /* Mejor espaciado entre líneas */
+}
+
+/* Contenido del mensaje con preservación de formato */
+.message-content {
+    white-space: pre-wrap;    /* Preserva espacios y saltos de línea */
+    word-wrap: break-word;    /* Evita desbordamiento horizontal */
+    margin-top: 5px;
+    line-height: 1.4;         /* Mejor espaciado entre líneas */
 }

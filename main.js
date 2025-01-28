@@ -5,6 +5,7 @@ class Chat {
         this.socket = null;                   // Conexión Socket.IO
         this.username = '';                   // Nombre del usuario
         this.theme = 'light';                 // Tema actual
+        this.isShiftPressed = false;          // Estado de la tecla Shift
 
         // Referencias a elementos del DOM
         this.messagesList = document.getElementById('messages');
@@ -50,6 +51,33 @@ class Chat {
 
         // Manejo del cambio de tema
         this.themeToggle.addEventListener('click', () => this.toggleTheme());
+
+        // Nuevo: Manejo de teclas para el input de mensajes
+        this.messageInput.addEventListener('keydown', (e) => {
+            // Detecta cuando se presiona Shift
+            if (e.key === 'Shift') {
+                this.isShiftPressed = true;
+            }
+            
+            // Si es Enter, maneja el envío o salto de línea
+            if (e.key === 'Enter') {
+                if (this.isShiftPressed) {
+                    // Con Shift presionado, permite el salto de línea
+                    return;
+                } else {
+                    // Sin Shift, envía el mensaje
+                    e.preventDefault();
+                    this.handleMessageSubmit();
+                }
+            }
+        });
+
+        // Detecta cuando se suelta Shift
+        this.messageInput.addEventListener('keyup', (e) => {
+            if (e.key === 'Shift') {
+                this.isShiftPressed = false;
+            }
+        });
     }
 
     // Maneja el envío del nombre de usuario
@@ -77,11 +105,20 @@ class Chat {
     displayMessage(msg) {
         const li = document.createElement('li');
         li.className = `message ${msg.usuario === this.username ? 'own' : ''}`;
+        
+        // Preserva saltos de línea y espacios, evita inyección HTML
+        const formattedMessage = msg.mensaje
+            .replace(/\n/g, '<br>')           // Convierte saltos de línea en <br>
+            .replace(/\s{2,}/g, match =>      // Preserva múltiples espacios
+                '&nbsp;'.repeat(match.length)
+            );
+
         li.innerHTML = `
             <strong>${msg.usuario}</strong>
             <span class="time">${msg.tiempo}</span><br>
-            ${msg.mensaje}
+            <div class="message-content">${formattedMessage}</div>
         `;
+        
         this.messagesList.appendChild(li);
         this.scrollToBottom();
     }
