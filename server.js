@@ -57,7 +57,8 @@ io.on('connection', (socket) => {
     });
 });
 
-const PORT = process.env.PORT || 3000;
-http.listen(PORT, () => {
+// IMPORTANTE: Usar el puerto de Render
+const PORT = process.env.PORT || 10000;
+http.listen(PORT, '0.0.0.0', () => {
     console.log(`Servidor iniciado en puerto ${PORT}`);
 });
