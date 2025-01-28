@@ -1,60 +1,65 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <!-- Metadatos básicos -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat en Tiempo Real</title>
-    
-    <!-- Enlaces a archivos CSS -->
+    <title>Chat de Usuarios</title>
     <link rel="stylesheet" href="styles.css">
-    
-    <!-- Scripts necesarios -->
-    <script src="/socket.io/socket.io.js"></script>
+    <!-- Agregamos íconos de Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
-    <!-- Contenedor principal -->
-    <div class="chat-container">
-        <!-- Encabezado del chat -->
-        <header class="chat-header">
-            <h1>Chat en Tiempo Real</h1>
-            <!-- Selector de tema -->
-            <button id="theme-toggle">🌙</button>
-        </header>
-
-        <!-- Lista de usuarios conectados -->
-        <div class="users-list">
-            <h3>Usuarios Conectados</h3>
-            <ul id="users"></ul>
-        </div>
-
-        <!-- Área de mensajes -->
-        <div class="messages-container">
-            <ul id="messages" style="white-space: pre-wrap; word-wrap: break-word;"></ul>
-        </div>
-
-        <!-- Formulario de entrada -->
-        <div class="input-container">
-            <!-- Formulario para el nombre de usuario -->
-            <form id="username-form" class="active">
-                <input type="text" id="username" placeholder="Ingresa tu nombre" required>
-                <button type="submit">Unirse al Chat</button>
+    <!-- Modal para ingresar nombre de usuario -->
+    <div id="userModal" class="modal">
+        <div class="modal-content">
+            <h2>Bienvenido al Chat</h2>
+            <form id="userForm">
+                <input type="text" id="username" placeholder="Ingresa tu nombre de usuario" required>
+                <button type="submit">Comenzar a chatear</button>
             </form>
-
-            <!-- Formulario para mensajes -->
-            <form id="message-form" class="hidden">
-                <input type="text" id="message" placeholder="Escribe un mensaje..." autocomplete="off">
-                <button type="submit">Enviar</button>
-            </form>
-        </div>
-
-        <!-- Indicador de estado de conexión -->
-        <div id="connection-status" class="disconnected">
-            Desconectado
         </div>
     </div>
 
-    <!-- Script principal -->
+    <!-- Contenedor principal del chat -->
+    <div class="chat-container">
+        <header class="chat-header">
+            <h1>Chat de Usuarios</h1>
+            <div class="header-controls">
+                <!-- Nombre de usuario actual -->
+                <span id="currentUser"></span>
+                <!-- Botón para cambiar tema -->
+                <button id="themeToggle" class="theme-toggle">
+                    <span class="material-icons">dark_mode</span>
+                </button>
+                <!-- Estado de conexión -->
+                <div class="connection-status">
+                    <span class="status-indicator"></span>
+                    <span class="status-text">Conectado</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Área de mensajes -->
+        <div class="messages-area" id="messagesArea">
+            <!-- Los mensajes se insertarán aquí dinámicamente -->
+        </div>
+
+        <!-- Formulario para enviar mensajes -->
+        <form class="message-form" id="messageForm">
+            <textarea 
+                id="messageInput" 
+                placeholder="Escribe tu mensaje... (Shift + Enter para nueva línea)" 
+                required
+                rows="1"
+            ></textarea>
+            <button type="submit">
+                <span class="material-icons">send</span>
+            </button>
+        </form>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.1/socket.io.js"></script>
     <script src="main.js"></script>
 </body>
 </html>

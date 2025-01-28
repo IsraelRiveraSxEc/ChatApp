@@ -1,176 +1,272 @@
-// Clase principal para manejar el chat
-class Chat {
+/**
+ * Clase principal que maneja toda la funcionalidad del chat
+ */
+class ChatApp {
+    /**
+     * Constructor de la clase
+     * Inicializa todas las propiedades y eventos necesarios
+     */
     constructor() {
-        // Inicialización de variables
-        this.socket = null;                   // Conexión Socket.IO
-        this.username = '';                   // Nombre del usuario
-        this.theme = 'light';                 // Tema actual
-        this.isShiftPressed = false;          // Estado de la tecla Shift
-
         // Referencias a elementos del DOM
-        this.messagesList = document.getElementById('messages');
-        this.messageForm = document.getElementById('message-form');
-        this.messageInput = document.getElementById('message');
-        this.usernameForm = document.getElementById('username-form');
+        this.messageForm = document.getElementById('messageForm');
+        this.messageInput = document.getElementById('messageInput');
+        this.messagesArea = document.getElementById('messagesArea');
+        this.userModal = document.getElementById('userModal');
+        this.userForm = document.getElementById('userForm');
         this.usernameInput = document.getElementById('username');
-        this.usersList = document.getElementById('users');
-        this.themeToggle = document.getElementById('theme-toggle');
-        this.connectionStatus = document.getElementById('connection-status');
+        this.currentUserSpan = document.getElementById('currentUser');
+        this.themeToggle = document.getElementById('themeToggle');
+
+        // Estado de la aplicación
+        this.username = localStorage.getItem('username') || '';
+        this.messages = JSON.parse(localStorage.getItem('messages')) || [];
+        this.socket = null;
+
+        // Vinculación de métodos
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleKeyPress = this.handleKeyPress.bind(this);
+        this.handleUserSubmit = this.handleUserSubmit.bind(this);
+        this.toggleTheme = this.toggleTheme.bind(this);
 
         // Inicialización
-        this.initializeSocket();              // Configura Socket.IO
-        this.initializeEventListeners();      // Configura event listeners
-        this.loadTheme();                     // Carga el tema guardado
+        this.initializeTheme();
+        this.initializeSocket();
+        this.initializeEventListeners();
+        this.loadStoredMessages();
+        
+        // Mostrar modal si no hay username
+        if (!this.username) {
+            this.showUserModal();
+        } else {
+            this.hideUserModal();
+            this.updateCurrentUser();
+        }
     }
 
-    // Inicializa la conexión Socket.IO
+    /**
+     * Inicializa el tema según las preferencias del sistema
+     */
+    initializeTheme() {
+        // Detecta preferencia del sistema
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const savedTheme = localStorage.getItem('theme');
+        
+        // Aplica el tema guardado o el preferido del sistema
+        if (savedTheme) {
+            document.body.setAttribute('data-theme', savedTheme);
+        } else if (prefersDark) {
+            document.body.setAttribute('data-theme', 'dark');
+        }
+
+        // Observa cambios en la preferencia del sistema
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+            if (!localStorage.getItem('theme')) {
+                document.body.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+            }
+        });
+    }
+
+    /**
+     * Inicializa la conexión WebSocket
+     */
     initializeSocket() {
-        this.socket = io();                   // Crea conexión Socket.IO
+        this.socket = io('http://localhost:3000');
 
-        // Manejo de eventos de Socket.IO
-        this.socket.on('connect', () => this.updateConnectionStatus(true));
-        this.socket.on('disconnect', () => this.updateConnectionStatus(false));
-        this.socket.on('chat message', (msg) => this.displayMessage(msg));
-        this.socket.on('mensaje sistema', (msg) => this.displaySystemMessage(msg));
-        this.socket.on('lista usuarios', (users) => this.updateUsersList(users));
+        this.socket.on('connect', () => {
+            this.updateConnectionStatus(true);
+        });
+
+        this.socket.on('disconnect', () => {
+            this.updateConnectionStatus(false);
+        });
+
+        this.socket.on('chat message', (data) => {
+            this.receiveMessage(data);
+        });
     }
 
-    // Configura los event listeners
+    /**
+     * Inicializa todos los event listeners
+     */
     initializeEventListeners() {
-        // Manejo del formulario de nombre de usuario
-        this.usernameForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            this.handleUsernameSubmit();
-        });
-
-        // Manejo del formulario de mensajes
-        this.messageForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            this.handleMessageSubmit();
-        });
-
-        // Manejo del cambio de tema
-        this.themeToggle.addEventListener('click', () => this.toggleTheme());
-
-        // Nuevo: Manejo de teclas para el input de mensajes
-        this.messageInput.addEventListener('keydown', (e) => {
-            // Detecta cuando se presiona Shift
-            if (e.key === 'Shift') {
-                this.isShiftPressed = true;
-            }
-            
-            // Si es Enter, maneja el envío o salto de línea
-            if (e.key === 'Enter') {
-                if (this.isShiftPressed) {
-                    // Con Shift presionado, permite el salto de línea
-                    return;
-                } else {
-                    // Sin Shift, envía el mensaje
-                    e.preventDefault();
-                    this.handleMessageSubmit();
-                }
-            }
-        });
-
-        // Detecta cuando se suelta Shift
-        this.messageInput.addEventListener('keyup', (e) => {
-            if (e.key === 'Shift') {
-                this.isShiftPressed = false;
-            }
-        });
-    }
-
-    // Maneja el envío del nombre de usuario
-    handleUsernameSubmit() {
-        this.username = this.usernameInput.value.trim();
-        if (this.username) {
-            this.socket.emit('nuevo usuario', this.username);
-            this.usernameForm.classList.remove('active');
-            this.usernameForm.classList.add('hidden');
-            this.messageForm.classList.remove('hidden');
-            this.messageForm.classList.add('active');
-        }
-    }
-
-    // Maneja el envío de mensajes
-    handleMessageSubmit() {
-        const message = this.messageInput.value.trim();
-        if (message) {
-            this.socket.emit('chat message', message);
-            this.messageInput.value = '';
-        }
-    }
-
-    // Muestra un mensaje en el chat
-    displayMessage(msg) {
-        const li = document.createElement('li');
-        li.className = `message ${msg.usuario === this.username ? 'own' : ''}`;
+        this.messageForm.addEventListener('submit', this.handleSubmit);
+        this.messageInput.addEventListener('keydown', this.handleKeyPress);
+        this.userForm.addEventListener('submit', this.handleUserSubmit);
+        this.themeToggle.addEventListener('click', this.toggleTheme);
         
-        // Preserva saltos de línea y espacios, evita inyección HTML
-        const formattedMessage = msg.mensaje
-            .replace(/\n/g, '<br>')           // Convierte saltos de línea en <br>
-            .replace(/\s{2,}/g, match =>      // Preserva múltiples espacios
-                '&nbsp;'.repeat(match.length)
-            );
-
-        li.innerHTML = `
-            <strong>${msg.usuario}</strong>
-            <span class="time">${msg.tiempo}</span><br>
-            <div class="message-content">${formattedMessage}</div>
-        `;
-        
-        this.messagesList.appendChild(li);
-        this.scrollToBottom();
-    }
-
-    // Muestra un mensaje del sistema
-    displaySystemMessage(msg) {
-        const li = document.createElement('li');
-        li.className = 'message system';
-        li.textContent = msg;
-        this.messagesList.appendChild(li);
-        this.scrollToBottom();
-    }
-
-    // Actualiza la lista de usuarios
-    updateUsersList(users) {
-        this.usersList.innerHTML = '';
-        users.forEach(user => {
-            const li = document.createElement('li');
-            li.textContent = user;
-            this.usersList.appendChild(li);
+        this.messageInput.addEventListener('input', () => {
+            this.adjustTextareaHeight();
         });
     }
 
-    // Actualiza el estado de conexión
-    updateConnectionStatus(connected) {
-        this.connectionStatus.className = connected ? 'connected' : 'disconnected';
-        this.connectionStatus.textContent = connected ? 'Conectado' : 'Desconectado';
-    }
-
-    // Cambia entre tema claro y oscuro
+    /**
+     * Maneja el cambio de tema claro/oscuro
+     */
     toggleTheme() {
-        this.theme = this.theme === 'light' ? 'dark' : 'light';
-        document.documentElement.setAttribute('data-theme', this.theme);
-        this.themeToggle.textContent = this.theme === 'light' ? '🌙' : '☀️';
-        localStorage.setItem('theme', this.theme);
+        const currentTheme = document.body.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        
+        document.body.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        
+        // Actualiza el ícono
+        const icon = this.themeToggle.querySelector('.material-icons');
+        icon.textContent = newTheme === 'dark' ? 'light_mode' : 'dark_mode';
     }
 
-    // Carga el tema guardado
-    loadTheme() {
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        this.theme = savedTheme;
-        document.documentElement.setAttribute('data-theme', savedTheme);
-        this.themeToggle.textContent = savedTheme === 'light' ? '🌙' : '☀️';
+    /**
+     * Actualiza el estado de conexión en la UI
+     */
+    updateConnectionStatus(connected) {
+        const statusIndicator = document.querySelector('.status-indicator');
+        const statusText = document.querySelector('.status-text');
+        
+        statusIndicator.style.background = connected ? 'var(--status-color)' : '#ff3d00';
+        statusText.textContent = connected ? 'Conectado' : 'Desconectado';
     }
 
-    // Hace scroll al último mensaje
+    /**
+     * Muestra el modal de usuario
+     */
+    showUserModal() {
+        this.userModal.style.display = 'flex';
+    }
+
+    /**
+     * Oculta el modal de usuario
+     */
+    hideUserModal() {
+        this.userModal.style.display = 'none';
+    }
+
+    /**
+     * Maneja el envío del formulario de usuario
+     */
+    handleUserSubmit(event) {
+        event.preventDefault();
+        this.username = this.usernameInput.value.trim();
+        
+        if (this.username) {
+            localStorage.setItem('username', this.username);
+            this.hideUserModal();
+            this.updateCurrentUser();
+        }
+    }
+
+    /**
+     * Actualiza el nombre de usuario mostrado
+     */
+    updateCurrentUser() {
+        this.currentUserSpan.textContent = this.username;
+    }
+
+    /**
+     * Carga los mensajes almacenados en localStorage
+     */
+    loadStoredMessages() {
+        this.messages.forEach(message => {
+            this.displayMessage(message);
+        });
+        this.scrollToBottom();
+    }
+
+    /**
+     * Maneja el envío de mensajes
+     */
+    handleSubmit(event) {
+        event.preventDefault();
+        const messageText = this.messageInput.value.trim();
+        
+        if (messageText && this.username) {
+            const message = {
+                text: messageText,
+                username: this.username,
+                timestamp: new Date().toISOString(),
+                type: 'sent'
+            };
+
+            this.socket.emit('chat message', message);
+            this.addMessage(message);
+            
+            this.messageInput.value = '';
+            this.adjustTextareaHeight();
+        }
+    }
+
+    /**
+     * Maneja el evento de teclas presionadas
+     */
+    handleKeyPress(event) {
+        if (event.key === 'Enter' && !event.shiftKey) {
+            event.preventDefault();
+            this.handleSubmit(event);
+        }
+    }
+
+    /**
+     * Ajusta la altura del textarea según su contenido
+     */
+    adjustTextareaHeight() {
+        const textarea = this.messageInput;
+        textarea.style.height = 'auto';
+        textarea.style.height = `${textarea.scrollHeight}px`;
+    }
+
+    /**
+     * Recibe y procesa mensajes entrantes
+     */
+    receiveMessage(message) {
+        if (message.username !== this.username) {
+            message.type = 'received';
+            this.addMessage(message);
+        }
+    }
+
+    /**
+     * Agrega un mensaje al chat
+     */
+    addMessage(message) {
+        this.messages.push(message);
+        localStorage.setItem('messages', JSON.stringify(this.messages));
+        this.displayMessage(message);
+        this.scrollToBottom();
+    }
+
+    /**
+     * Muestra un mensaje en la interfaz
+     */
+    displayMessage(message) {
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('message', message.type);
+
+        const header = document.createElement('div');
+        header.classList.add('message-header');
+        header.textContent = message.username;
+
+        const content = document.createElement('div');
+        content.classList.add('message-content');
+        content.innerHTML = message.text.replace(/\n/g, '<br>');
+
+        const footer = document.createElement('div');
+        footer.classList.add('message-footer');
+        footer.textContent = new Date(message.timestamp).toLocaleTimeString();
+
+        messageElement.appendChild(header);
+        messageElement.appendChild(content);
+        messageElement.appendChild(footer);
+
+        this.messagesArea.appendChild(messageElement);
+    }
+
+    /**
+     * Hace scroll hasta el último mensaje
+     */
     scrollToBottom() {
-        this.messagesList.scrollTop = this.messagesList.scrollHeight;
+        this.messagesArea.scrollTop = this.messagesArea.scrollHeight;
     }
 }
 
-// Inicializa la aplicación cuando el DOM está listo
+// Inicia la aplicación cuando el DOM está cargado
 document.addEventListener('DOMContentLoaded', () => {
-    new Chat();
+    new ChatApp();
 });
