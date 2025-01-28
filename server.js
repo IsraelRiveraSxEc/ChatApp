@@ -2,20 +2,10 @@
 const express = require('express');                // Framework web para Node.js
 const app = express();                            // Creación de la aplicación Express
 const http = require('http').createServer(app);   // Creación del servidor HTTP
-const io = require('socket.io')(http, {           // Configuración de Socket.IO
+const io = require('socket.io')(http, {
     cors: {
-        origin: "*",                              // Permite conexiones desde cualquier origen
-        methods: ["GET", "POST"]                  // Métodos HTTP permitidos
-    },
-    // Añadir configuraciones de seguridad
-    connectionTimeout: 15000,
-    pingTimeout: 10000,
-    pingInterval: 25000,
-    maxHttpBufferSize: 1e6, // 1MB máximo
-    allowRequest: (req, callback) => {
-        // Implementar validación de conexiones
-        const isValid = validateConnection(req);
-        callback(null, isValid);
+        origin: ["https://chatapp-xxxx.onrender.com", "http://localhost:3000"],
+        methods: ["GET", "POST"]
     }
 });
 
