@@ -1,6 +1,0 @@
-Características principales:
-Diseño limpio y responsivo
-Feedback visual inmediato
-Código bien documentado y mantenible
-Implementación de principios de UX/UI
-Estructura modular y escalable
