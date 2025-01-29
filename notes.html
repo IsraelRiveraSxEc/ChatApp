@@ -1,0 +1,43 @@
+<!-- Estructura principal del documento HTML -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!-- Metadatos y codificación -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Título de la aplicación -->
+    <title>Note App - Diseño UI</title>
+    <!-- Enlace a los estilos CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Contenedor principal de la aplicación -->
+    <div class="container">
+        <!-- Encabezado de la aplicación -->
+        <header>
+            <h1>Note App</h1>
+            <div class="header-buttons">
+                <button id="theme-toggle">Cambiar Tema</button>
+                <button id="logout-btn" onclick="logout()">Cerrar Sesión</button>
+            </div>
+        </header>
+        
+        <!-- Sección para crear nuevas notas -->
+        <div class="note-input">
+            <!-- Campo de texto para el título de la nota -->
+            <input type="text" id="note-title" placeholder="Título de la nota">
+            <!-- Área de texto para el contenido de la nota -->
+            <textarea id="note-content" placeholder="Escribe tu nota aquí..."></textarea>
+            <!-- Botón para guardar la nota -->
+            <button id="save-note">Guardar Nota</button>
+        </div>
+        
+        <!-- Contenedor donde se mostrarán las notas guardadas -->
+        <div class="notes-container" id="notes-list">
+            <!-- Las notas se agregarán dinámicamente aquí -->
+        </div>
+    </div>
+    <!-- Enlace al archivo JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>

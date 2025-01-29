@@ -1,0 +1,63 @@
+<!-- Estructura principal del documento HTML -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!-- Metadatos y codificación -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Título de la aplicación -->
+    <title>Note App</title>
+    <!-- Enlace a los estilos CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Vista de Login - Se muestra inicialmente -->
+    <div id="login-view" class="container">
+        <div class="auth-container">
+            <h2>Note App</h2>
+            <form id="auth-form">
+                <!-- Campos de autenticación -->
+                <input type="text" id="username" placeholder="Usuario" required>
+                <input type="password" id="password" placeholder="Contraseña" maxlength="8" required>
+                <p class="password-hint">Únicamente 8 caracteres</p>
+                
+                <!-- Opción para recordar credenciales -->
+                <div class="remember-me">
+                    <input type="checkbox" id="remember">
+                    <label for="remember">Recordar contraseña</label>
+                </div>
+                
+                <!-- Botones de autenticación -->
+                <button type="submit" id="login-btn">Ingresar</button>
+                <button type="button" id="register-btn">Registrarse</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Vista de Notas -->
+    <div id="notes-view" class="container" style="display: none;">
+        <header>
+            <h1>Note App</h1>
+            <div class="header-buttons">
+                <button id="theme-toggle">Cambiar Tema</button>
+                <button id="logout-btn">Cerrar Sesión</button>
+            </div>
+        </header>
+        
+        <!-- Sección para crear nuevas notas -->
+        <div class="note-input">
+            <input type="text" id="note-title" placeholder="Título de la nota">
+            <textarea id="note-content" placeholder="Escribe tu nota aquí..."></textarea>
+            <button id="save-note">Guardar Nota</button>
+        </div>
+        
+        <!-- Contenedor donde se mostrarán las notas -->
+        <div class="notes-container" id="notes-list">
+            <!-- Las notas se agregarán dinámicamente aquí -->
+        </div>
+    </div>
+
+    <!-- Script principal de la aplicación -->
+    <script src="main.js"></script>
+</body>
+</html>
